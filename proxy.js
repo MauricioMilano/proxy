@@ -15,17 +15,19 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", async (req, res) => {
-  
-
-
   try {
     console.log(`Sending request to : ${destinyUrl}`);
     let url = destinyUrl + "?" + querystring.stringify(req.query);
     let response = await axios.get(url);
+    console.log(`Response received from request. Redirecting response`);
     res.send(response.data).status(200);
   } catch (err) {
-    console.log(`Error: ${err}`);
-    (err.response || err.response.status)? res.sendStatus(err.response.status) : res.sendStatus(400);
+    console.log(`Exception was caught: ${err}`);
+    if (err && err.response && err.response.status) {
+      res.status(err.response.status).send(err.message)
+    } else {
+      res.status(400).send(err.message);
+    }
   }
 });
 app.post("/", async (req, res) => {
@@ -36,7 +38,11 @@ app.post("/", async (req, res) => {
     res.send(response.data).status(200);
   } catch (err) {
     console.log(`Exception was caught: ${err}`);
-    (err.response || err.response.status)? res.sendStatus(err.response.status) : res.sendStatus(400);
+    if (err && err.response && err.response.status) {
+      res.status(err.response.status).send(err.message)
+    } else {
+      res.status(400).send(err.message);
+    }
   }
 });
 app.listen(port, () => {
