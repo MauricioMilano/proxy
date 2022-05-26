@@ -2,10 +2,13 @@ const { response } = require("express");
 const querystring = require("querystring");
 const express = require("express");
 const axios = require("axios").default;
-
+const https = require("https")
 axios.defaults.headers.post['Content-Type'] = "application/json"
 const app = express();
 const port = process.env.PORT || 80
+axios.defaults.httpsAgent = new https.Agent({  
+    rejectUnauthorized: false
+})
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
