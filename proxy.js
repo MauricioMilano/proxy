@@ -5,7 +5,7 @@ const axios = require("axios").default;
 
 axios.defaults.headers.post['Content-Type'] = "application/json"
 const app = express();
-const port = 0;
+const port = process.env.PORT || 80
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
