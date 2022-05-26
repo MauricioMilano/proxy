@@ -20,7 +20,8 @@ app.get("/", async (req, res) => {
     let url = destinyUrl + "?" + querystring.stringify(req.query);
     let response = await axios.get(url);
     console.log(`Response received from request. Redirecting response`);
-    res.send(response.data).status(200);
+    if(typeof response.data === "number") response.data = `${response.data}`
+    res.status(200).send(response.data);
   } catch (err) {
     console.log(`Exception was caught: ${err}`);
     if (err && err.response && err.response.status) {
@@ -35,7 +36,8 @@ app.post("/", async (req, res) => {
     console.log(`Sending request to : ${destinyUrl} \nBody:\n${JSON.stringify(req.body, null, 2)}`);
     let response = await axios.post(destinyUrl, req.body);
     console.log(`Response received from request. Redirecting response`);
-    res.send(response.data).status(200);
+    if(typeof response.data === "number") response.data = `${response.data}`
+    res.status(200).send(response.data);
   } catch (err) {
     console.log(`Exception was caught: ${err}`);
     if (err && err.response && err.response.status) {
